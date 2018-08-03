@@ -1,11 +1,15 @@
 package com.example.android.bakingapp.Utility;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Recipe {
+public class Recipe  implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -25,6 +29,15 @@ public class Recipe {
     @SerializedName("image")
     @Expose
     private String image;
+
+
+    Recipe(Parcel in) {
+
+        this.ingredients = new ArrayList<Ingredient>();
+        this.steps = new ArrayList<Step>();
+        in.readTypedList(ingredients, Ingredient.CREATOR);
+        in.readTypedList(steps, Step.CREATOR);
+    }
 
     public Integer getId() {
         return id;
@@ -73,5 +86,29 @@ public class Recipe {
     public void setImage(String image) {
         this.image = image;
     }
+
+
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeTypedList(ingredients);
+        dest.writeTypedList(steps);
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+
+    public static final Parcelable.Creator<Recipe> CREATOR
+            = new Parcelable.Creator<Recipe>() {
+
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
 }

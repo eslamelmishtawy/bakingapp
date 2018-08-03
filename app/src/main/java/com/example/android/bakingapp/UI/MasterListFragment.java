@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utility.Ingredient;
 import com.example.android.bakingapp.Utility.LoadRecipe;
 import com.example.android.bakingapp.Utility.NoOfCols;
 import com.example.android.bakingapp.Utility.Recipe;
+import com.example.android.bakingapp.Utility.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class MasterListFragment extends Fragment implements MasterListAdapter.Ma
 
     // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface onClickListener {
-        void onCardSelected(String recipee);
+        void onCardSelected(List<Ingredient> recipeIngredients, List<Step> recipeSteps);
     }
 
     // Override onAttach to make sure that the container activity has implemented the callback
@@ -63,23 +65,17 @@ public class MasterListFragment extends Fragment implements MasterListAdapter.Ma
         GridLayoutManager layoutManager
                 = new GridLayoutManager(rootView.getContext(), mNoOfColumns, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        // Create the adapter
-        // This adapter takes in the context and an ArrayList of ALL the image resources to display
         MasterListAdapter mAdapter = new MasterListAdapter(MasterListFragment.this);
-
-        // Set the adapter on the GridView
         recyclerView.setAdapter(mAdapter);
         recipe = LoadRecipe.loadRecipe(rootView.getContext());
         mAdapter.setRecipe(recipe);
-        // Set a click listener on the gridView and trigger the callback onImageSelected when an item is clicked
-
         // Return the root view
         return rootView;
     }
 
     @Override
-    public void onClick(String recipee) {
-        mCallback.onCardSelected(recipee);
+    public void onClick(List<Ingredient> recipeIngredients, List<Step> recipeSteps) {
+        mCallback.onCardSelected(recipeIngredients, recipeSteps);
     }
 }
 

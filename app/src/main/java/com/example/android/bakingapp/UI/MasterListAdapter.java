@@ -8,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utility.Ingredient;
 import com.example.android.bakingapp.Utility.Recipe;
+import com.example.android.bakingapp.Utility.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
     private final MasterListAdapterOnClickHandler mClickHandler;
 
     public interface MasterListAdapterOnClickHandler {
-        void onClick(String recipeName);
+        void onClick(List<Ingredient> recipeIngredients, List<Step> recipeDescription);
     }
 
     public MasterListAdapter( MasterListAdapterOnClickHandler clickHandler ) {
@@ -41,8 +43,9 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String recipeName = recipe.get(adapterPosition).getName();
-            mClickHandler.onClick(recipeName);
+            List<Ingredient> recipeIngredients = recipe.get(adapterPosition).getIngredients();
+            List<Step> recipeSteps = recipe.get(adapterPosition).getSteps();
+            mClickHandler.onClick(recipeIngredients, recipeSteps);
         }
 
     }
