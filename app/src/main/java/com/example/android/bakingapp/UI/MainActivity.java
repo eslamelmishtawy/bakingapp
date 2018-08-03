@@ -7,10 +7,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.Utility.Ingredient;
+import com.example.android.bakingapp.Utility.Recipe;
 import com.example.android.bakingapp.Utility.Step;
 
 import java.util.ArrayList;
@@ -33,18 +36,20 @@ public class MainActivity extends FragmentActivity implements MasterListFragment
                 .commit();
     }
 
-    public void onCardSelected(List<Ingredient> recipeIngredients, List<Step> recipeSteps) {
+    public void onCardSelected(ArrayList<Step> s, final ArrayList<Ingredient> i) {
         // Create a Toast that displays the position that was clicked
         fragment = new RecipeStuffFragment();
-
+        Bundle b = new Bundle();
+        b.putParcelableArrayList("ingredients", i);
+        b.putParcelableArrayList("steps",s);
+        fragment.setArguments(b);
         fragmentManager.beginTransaction()
                 .replace(R.id.master_list_fragment, fragment)
                 .commit();
-
     }
 
     public void onCardSelectedRecipe(int i){
-
+        Toast.makeText(MainActivity.this, "test " + i, Toast.LENGTH_SHORT).show();
     }
 
 }

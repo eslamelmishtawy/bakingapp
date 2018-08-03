@@ -1,6 +1,7 @@
 package com.example.android.bakingapp.UI;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.Utility.Ingredient;
@@ -32,6 +35,9 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
     public interface onClickListenerRecipe {
         void onCardSelectedRecipe(int s);
     }
+
+
+
     // Mandatory empty constructor
     public RecipeStuffFragment() {
     }
@@ -47,9 +53,23 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
         RecipeAdapter mAdapter = new RecipeAdapter(RecipeStuffFragment.this);
         recyclerView.setAdapter(mAdapter);
+        final Bundle b = getArguments();
+        mAdapter.setRecipeDescription(b.<Step>getParcelableArrayList("steps"));
         // Return the root view
+
+        TextView tv = (TextView) rootView.findViewById(R.id.tv_recipe_ingredients);
+
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RecipeIngredients.class);
+                intent.putParcelableArrayListExtra("ing",b.<Ingredient>getParcelableArrayList("ingredients"));
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -57,6 +77,8 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
     public void onClick(int s) {
         mCallback.onCardSelectedRecipe(s);
     }
+
+
 }
 
 

@@ -19,10 +19,10 @@ public class Recipe  implements Parcelable {
     private String name;
     @SerializedName("ingredients")
     @Expose
-    private List<Ingredient> ingredients = null;
+    private ArrayList<Ingredient> ingredients = null;
     @SerializedName("steps")
     @Expose
-    private List<Step> steps = null;
+    private ArrayList<Step> steps = null;
     @SerializedName("servings")
     @Expose
     private Integer servings;
@@ -55,19 +55,19 @@ public class Recipe  implements Parcelable {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredients() {
+    public ArrayList<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public List<Step> getSteps() {
+    public ArrayList<Step> getSteps() {
         return steps;
     }
 
-    public void setSteps(List<Step> steps) {
+    public void setSteps(ArrayList<Step> steps) {
         this.steps = steps;
     }
 

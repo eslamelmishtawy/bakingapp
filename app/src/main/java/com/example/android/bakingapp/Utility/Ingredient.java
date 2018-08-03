@@ -58,7 +58,7 @@ public class Ingredient implements Parcelable {
         dest.writeString(ingredient);
     }
 
-    static final Parcelable.Creator<Ingredient> CREATOR
+    public static final Parcelable.Creator<Ingredient> CREATOR
             = new Parcelable.Creator<Ingredient>() {
 
         public Ingredient createFromParcel(Parcel in) {

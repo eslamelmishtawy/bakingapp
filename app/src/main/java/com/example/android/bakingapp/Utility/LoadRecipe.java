@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.bakingapp.UI.MainActivity;
+import com.example.android.bakingapp.UI.OnResponseFetched;
 
 import java.util.List;
 import java.util.List;
@@ -19,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoadRecipe {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static List<Recipe> recipe;
-    public static List<Recipe> loadRecipe(final Context context) {
+    public static List<Recipe> loadRecipe(final Context context, final OnResponseFetched listener) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl("https://d17h27t6h515a5.cloudfront.net/")
                 .addConverterFactory(GsonConverterFactory.create());
@@ -33,6 +34,7 @@ public class LoadRecipe {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 recipe = response.body();
+                listener.onRecipesFetched(recipe);
             }
 
             @Override

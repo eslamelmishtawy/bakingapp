@@ -30,7 +30,7 @@ public class MasterListFragment extends Fragment implements MasterListAdapter.Ma
 
     // OnImageClickListener interface, calls a method in the host activity named onImageSelected
     public interface onClickListener {
-        void onCardSelected(List<Ingredient> recipeIngredients, List<Step> recipeSteps);
+        void onCardSelected(ArrayList<Step> s, ArrayList<Ingredient> i);
     }
 
     // Override onAttach to make sure that the container activity has implemented the callback
@@ -61,21 +61,27 @@ public class MasterListFragment extends Fragment implements MasterListAdapter.Ma
         final View rootView = inflater.inflate(R.layout.fragment_master_list, container, false);
         int mNoOfColumns = NoOfCols.calculateNoOfColumns(rootView.getContext());
         // Get a reference to the GridView in the fragment_master_list xml layout file
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_card);
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_card);
         GridLayoutManager layoutManager
                 = new GridLayoutManager(rootView.getContext(), mNoOfColumns, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        MasterListAdapter mAdapter = new MasterListAdapter(MasterListFragment.this);
-        recyclerView.setAdapter(mAdapter);
-        recipe = LoadRecipe.loadRecipe(rootView.getContext());
-        mAdapter.setRecipe(recipe);
+        final MasterListAdapter mAdapter = new MasterListAdapter(MasterListFragment.this);
+        recipe = LoadRecipe.loadRecipe(rootView.getContext(), new OnResponseFetched(){
+            @Override
+            public void onRecipesFetched(List<Recipe> fetchedList){
+                recipe = fetchedList;
+                recyclerView.setAdapter(mAdapter);
+                mAdapter.setRecipe(recipe);
+            }
+        });
+
         // Return the root view
         return rootView;
     }
 
     @Override
-    public void onClick(List<Ingredient> recipeIngredients, List<Step> recipeSteps) {
-        mCallback.onCardSelected(recipeIngredients, recipeSteps);
+    public void onClick(ArrayList<Step> s, ArrayList<Ingredient> i) {
+        mCallback.onCardSelected(s, i);
     }
 }
 

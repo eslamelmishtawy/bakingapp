@@ -22,7 +22,7 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
     private final MasterListAdapterOnClickHandler mClickHandler;
 
     public interface MasterListAdapterOnClickHandler {
-        void onClick(List<Ingredient> recipeIngredients, List<Step> recipeDescription);
+        void onClick(ArrayList<Step> s, ArrayList<Ingredient> r);
     }
 
     public MasterListAdapter( MasterListAdapterOnClickHandler clickHandler ) {
@@ -43,9 +43,7 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            List<Ingredient> recipeIngredients = recipe.get(adapterPosition).getIngredients();
-            List<Step> recipeSteps = recipe.get(adapterPosition).getSteps();
-            mClickHandler.onClick(recipeIngredients, recipeSteps);
+            mClickHandler.onClick(recipe.get(adapterPosition).getSteps(), recipe.get(adapterPosition).getIngredients());
         }
 
     }
@@ -76,5 +74,4 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
         recipe = recipee;
         notifyDataSetChanged();
     }
-
 }
