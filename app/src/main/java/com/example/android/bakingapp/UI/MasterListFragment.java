@@ -3,6 +3,7 @@ package com.example.android.bakingapp.UI;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,28 +26,6 @@ import java.util.List;
 // The list appears as a grid of images
 public class MasterListFragment extends Fragment implements MasterListAdapter.MasterListAdapterOnClickHandler{
     private List<Recipe> recipe;
-    // Define a new interface OnImageClickListener that triggers a callback in the host activity
-    onClickListener mCallback;
-
-    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
-    public interface onClickListener {
-        void onCardSelected(ArrayList<Step> s, ArrayList<Ingredient> i);
-    }
-
-    // Override onAttach to make sure that the container activity has implemented the callback
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the host activity has implemented the callback interface
-        // If not, it throws an exception
-        try {
-            mCallback = (onClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnImageClickListener");
-        }
-    }
 
 
     // Mandatory empty constructor
@@ -81,7 +60,15 @@ public class MasterListFragment extends Fragment implements MasterListAdapter.Ma
 
     @Override
     public void onClick(ArrayList<Step> s, ArrayList<Ingredient> i) {
-        mCallback.onCardSelected(s, i);
+        MainActivity.fragment = new RecipeStuffFragment();
+        Bundle b = new Bundle();
+        b.putParcelableArrayList("ingredients", i);
+        b.putParcelableArrayList("steps",s);
+        MainActivity.fragment.setArguments(b);
+        MainActivity.fragmentManager.beginTransaction()
+                .addToBackStack("test")
+                .replace(R.id.master_list_fragment, MainActivity.fragment)
+                .commit();
     }
 }
 

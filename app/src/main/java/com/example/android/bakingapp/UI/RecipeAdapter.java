@@ -17,11 +17,11 @@ import java.util.List;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdapterViewHolder> {
 
 
-    private List<Step> recipe;
+    private ArrayList<Step> recipe;
     private final RecipeAdapterViewHolderOnClickHandler mClickHandler;
 
     public interface RecipeAdapterViewHolderOnClickHandler {
-        void onClick(int recipeName);
+        void onClick(String v, String d);
     }
 
     public RecipeAdapter( RecipeAdapterViewHolderOnClickHandler clickHandler ) {
@@ -42,7 +42,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.onClick(adapterPosition);
+            String videoURL = recipe.get(adapterPosition).getVideoURL();
+            String description = recipe.get(adapterPosition).getDescription();
+            mClickHandler.onClick(videoURL, description);
         }
 
     }
@@ -69,9 +71,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         return recipe.size();
     }
 
-    public void setRecipeDescription(List<Step> recipeDescription) {
+    public void setRecipeDescription(ArrayList<Step> recipeDescription) {
         recipe = recipeDescription;
-
     }
 
 }

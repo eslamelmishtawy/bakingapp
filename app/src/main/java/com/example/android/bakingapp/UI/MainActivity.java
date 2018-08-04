@@ -19,9 +19,9 @@ import com.example.android.bakingapp.Utility.Step;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements MasterListFragment.onClickListener{
-    private Fragment fragment;
-    private FragmentManager fragmentManager;
+public class MainActivity extends AppCompatActivity {
+    public static Fragment fragment;
+    public static FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,22 +34,6 @@ public class MainActivity extends FragmentActivity implements MasterListFragment
         fragmentManager.beginTransaction()
                 .add(R.id.master_list_fragment, fragment)
                 .commit();
-    }
-
-    public void onCardSelected(ArrayList<Step> s, final ArrayList<Ingredient> i) {
-        // Create a Toast that displays the position that was clicked
-        fragment = new RecipeStuffFragment();
-        Bundle b = new Bundle();
-        b.putParcelableArrayList("ingredients", i);
-        b.putParcelableArrayList("steps",s);
-        fragment.setArguments(b);
-        fragmentManager.beginTransaction()
-                .replace(R.id.master_list_fragment, fragment)
-                .commit();
-    }
-
-    public void onCardSelectedRecipe(int i){
-        Toast.makeText(MainActivity.this, "test " + i, Toast.LENGTH_SHORT).show();
     }
 
 }

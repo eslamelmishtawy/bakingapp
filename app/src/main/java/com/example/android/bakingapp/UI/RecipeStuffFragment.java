@@ -27,14 +27,7 @@ import java.util.List;
 // This fragment displays all of the AndroidMe images in one large list
 // The list appears as a grid of images
 public class RecipeStuffFragment extends Fragment implements RecipeAdapter.RecipeAdapterViewHolderOnClickHandler{
-    private List<Recipe> recipe;
     // Define a new interface OnImageClickListener that triggers a callback in the host activity
-    onClickListenerRecipe mCallback;
-
-    // OnImageClickListener interface, calls a method in the host activity named onImageSelected
-    public interface onClickListenerRecipe {
-        void onCardSelectedRecipe(int s);
-    }
 
 
 
@@ -74,8 +67,11 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
     }
 
     @Override
-    public void onClick(int s) {
-        mCallback.onCardSelectedRecipe(s);
+    public void onClick(String v, String d) {
+        Intent intent = new Intent(getActivity(), RecipeVideo.class);
+        intent.putExtra("video", v);
+        intent.putExtra("description", d);
+        startActivity(intent);
     }
 
 

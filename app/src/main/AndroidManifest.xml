@@ -20,6 +20,7 @@
         </activity>
 
         <activity android:name=".UI.RecipeIngredients"></activity>
+        <activity android:name=".UI.RecipeVideo"></activity>
     </application>
 
 </manifest>
