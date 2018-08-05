@@ -37,31 +37,32 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         final View rootView = inflater.inflate(R.layout.fragment_recipe_stuff, container, false);
-        // Get a reference to the GridView in the fragment_master_list xml layout file
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_stuff);
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-        RecipeAdapter mAdapter = new RecipeAdapter(RecipeStuffFragment.this);
-        recyclerView.setAdapter(mAdapter);
-        final Bundle b = getArguments();
-        mAdapter.setRecipeDescription(b.<Step>getParcelableArrayList("s"));
-        // Return the root view
+        if(savedInstanceState == null) {
 
-        TextView tv = (TextView) rootView.findViewById(R.id.tv_recipe_ingredients);
+            // Get a reference to the GridView in the fragment_master_list xml layout file
+            RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.rv_recipe_stuff);
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(rootView.getContext(), LinearLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setNestedScrollingEnabled(false);
+            RecipeAdapter mAdapter = new RecipeAdapter(RecipeStuffFragment.this);
+            recyclerView.setAdapter(mAdapter);
+            final Bundle b = getArguments();
+            mAdapter.setRecipeDescription(b.<Step>getParcelableArrayList("s"));
+            // Return the root view
+            TextView tv = (TextView) rootView.findViewById(R.id.tv_recipe_ingredients);
 
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putParcelableArrayListExtra("ing",b.<Ingredient>getParcelableArrayList("ingredients"));
-                startActivity(intent);
-                ingredientBool = true;
-            }
-        });
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                    intent.putParcelableArrayListExtra("ing", b.<Ingredient>getParcelableArrayList("ingredients"));
+                    startActivity(intent);
+                    ingredientBool = true;
+                }
+            });
+        }
         return rootView;
     }
 
