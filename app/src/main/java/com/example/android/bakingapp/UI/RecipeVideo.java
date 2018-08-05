@@ -1,6 +1,8 @@
 package com.example.android.bakingapp.UI;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,10 +11,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.android.bakingapp.R;
@@ -51,30 +57,77 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class RecipeVideo extends AppCompatActivity {
+public class RecipeVideo extends Fragment {
+
+    public RecipeVideo() {
+    }
+
+    // Inflates the GridView of all AndroidMe images
 
     private ComponentListener componentListener;
     private long playbackPosition;
     private int currentWindow;
     private boolean playWhenReady = true;
-
+    private CardView card;
     private PlayerView mPlayerView;
     private SimpleExoPlayer player;
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER =
             new DefaultBandwidthMeter();
+    private String videoURL;
+    private String desc;
+
+    private TextView mTextView;
+
+
+    public String getScreenOrientation(Context context){
+        final int screenOrientation = ((WindowManager)  context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        switch (screenOrientation) {
+            case Surface.ROTATION_0:
+                return "SCREEN_ORIENTATION_PORTRAIT";
+            case Surface.ROTATION_90:
+                return "SCREEN_ORIENTATION_LANDSCAPE";
+            case Surface.ROTATION_180:
+                return "SCREEN_ORIENTATION_REVERSE_PORTRAIT";
+            default:
+                return "SCREEN_ORIENTATION_REVERSE_LANDSCAPE";
+        }
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.recipe_video_layout);
-        componentListener = new ComponentListener();
-        mPlayerView = (PlayerView) findViewById(R.id.playerView);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
+        final View rootView = inflater.inflate(R.layout.recipe_video_layout, container, false);
+        if(savedInstanceState == null) {
+            componentListener = new ComponentListener();
+            mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
+            card = (CardView) rootView.findViewById(R.id.cv_recipe_stuff);
+            Bundle b = getArguments();
+            videoURL = b.getString("video");
+            desc = b.getString("des");
+            mTextView = (TextView) rootView.findViewById(R.id.desciption);
+            mTextView.setText(desc);
+        }
+        return rootView;
+    }
+
+    @SuppressLint("InlinedApi")
+    private void hideSystemUi() {
+        mPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
 
@@ -94,7 +147,7 @@ public class RecipeVideo extends AppCompatActivity {
             TrackSelection.Factory adaptiveTrackSelectionFactory =
                     new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
             // using a DefaultTrackSelector with an adaptive video selection factory
-            player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this),
+            player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getActivity()),
                     new DefaultTrackSelector(adaptiveTrackSelectionFactory), new DefaultLoadControl());
             player.addListener(componentListener);
             player.addVideoDebugListener(componentListener);
@@ -103,7 +156,7 @@ public class RecipeVideo extends AppCompatActivity {
             player.setPlayWhenReady(playWhenReady);
             player.seekTo(currentWindow, playbackPosition);
         }
-        MediaSource mediaSource = buildMediaSource(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4"));
+        MediaSource mediaSource = buildMediaSource(Uri.parse(videoURL));
         player.prepare(mediaSource, true, false);
     }
 
@@ -125,7 +178,22 @@ public class RecipeVideo extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         if ((Util.SDK_INT <= 23 || player == null)) {
-            initializePlayer();
+            if(getScreenOrientation(getContext()) == "SCREEN_ORIENTATION_PORTRAIT") {
+                initializePlayer();
+                card.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
+                params.width=params.MATCH_PARENT;
+                params.height=300;
+                mPlayerView.setLayoutParams(params);
+            }else{
+                hideSystemUi();
+                card.setVisibility(View.GONE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
+                params.width=params.MATCH_PARENT;
+                params.height=params.MATCH_PARENT;
+                mPlayerView.setLayoutParams(params);
+                initializePlayer();
+            }
         }
     }
 

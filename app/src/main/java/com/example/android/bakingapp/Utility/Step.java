@@ -75,13 +75,13 @@ public class Step implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
-        dest.writeString(videoURL);
-        dest.writeString(thumbnailURL);
-        dest.writeString(description);
         dest.writeString(shortDescription);
+        dest.writeString(description);
+        dest.writeString(thumbnailURL);
+        dest.writeString(videoURL);
     }
 
-    static final Parcelable.Creator<Step> CREATOR
+    public static final Parcelable.Creator<Step> CREATOR
             = new Parcelable.Creator<Step>() {
 
         public Step createFromParcel(Parcel in) {

@@ -2,7 +2,7 @@
 <LinearLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical">
 
 
     <com.google.android.exoplayer2.ui.PlayerView
@@ -13,8 +13,21 @@
         app:fastforward_increment="30000"
         app:rewind_increment="30000"
         />
-
-
-
+    <android.support.v7.widget.CardView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:id="@+id/cv_recipe_stuff"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/desciption"
+        android:textSize="40sp"/>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

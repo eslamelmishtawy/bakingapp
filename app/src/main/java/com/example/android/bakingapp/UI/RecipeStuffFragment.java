@@ -28,9 +28,7 @@ import java.util.List;
 // The list appears as a grid of images
 public class RecipeStuffFragment extends Fragment implements RecipeAdapter.RecipeAdapterViewHolderOnClickHandler{
     // Define a new interface OnImageClickListener that triggers a callback in the host activity
-
-
-
+    public static boolean ingredientBool = false;
     // Mandatory empty constructor
     public RecipeStuffFragment() {
     }
@@ -50,7 +48,7 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
         RecipeAdapter mAdapter = new RecipeAdapter(RecipeStuffFragment.this);
         recyclerView.setAdapter(mAdapter);
         final Bundle b = getArguments();
-        mAdapter.setRecipeDescription(b.<Step>getParcelableArrayList("steps"));
+        mAdapter.setRecipeDescription(b.<Step>getParcelableArrayList("s"));
         // Return the root view
 
         TextView tv = (TextView) rootView.findViewById(R.id.tv_recipe_ingredients);
@@ -58,9 +56,10 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RecipeIngredients.class);
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
                 intent.putParcelableArrayListExtra("ing",b.<Ingredient>getParcelableArrayList("ingredients"));
                 startActivity(intent);
+                ingredientBool = true;
             }
         });
         return rootView;
@@ -68,10 +67,11 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
 
     @Override
     public void onClick(String v, String d) {
-        Intent intent = new Intent(getActivity(), RecipeVideo.class);
+        Intent intent = new Intent(getActivity(), DetailsActivity.class);
         intent.putExtra("video", v);
         intent.putExtra("description", d);
         startActivity(intent);
+        ingredientBool = false;
     }
 
 
