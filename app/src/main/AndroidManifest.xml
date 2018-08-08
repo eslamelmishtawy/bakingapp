@@ -22,15 +22,26 @@
         <activity android:name=".UI.DetailsActivity"></activity>
         <activity android:name=".UI.ListActivity"></activity>
 
-        <receiver android:name=".Widget.AppWidget">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/app_widget_info"/>
+        <receiver
+            android:name=".Widget.CollectionAppWidgetProvider"
+            android:label="test" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="me.indiandollar.apps.todoappcollectionwidget.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_info" />
         </receiver>
+
+        <provider
+            android:name=".Provider.RecipeContentProvider"
+            android:authorities="com.example.android.bakingapp"
+            android:exported="true" />
+
+        <service android:name=".Widget.MyWidgetRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"></service>
+
 
     </application>
 

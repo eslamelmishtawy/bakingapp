@@ -11,6 +11,7 @@ import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.Utility.Ingredient;
 import com.example.android.bakingapp.Utility.Recipe;
 import com.example.android.bakingapp.Utility.Step;
+import com.example.android.bakingapp.Widget.CollectionAppWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
 
 
     private List<Recipe> recipe;
+    private static String recipePositionName = "Brownies";
     private final MasterListAdapterOnClickHandler mClickHandler;
-
+    private  Context context;
     public interface MasterListAdapterOnClickHandler {
         void onClick(ArrayList<Step> s, ArrayList<Ingredient> r);
     }
@@ -44,13 +46,15 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mClickHandler.onClick(recipe.get(adapterPosition).getSteps(), recipe.get(adapterPosition).getIngredients());
+            setRecipePositionName(recipe.get(adapterPosition).getName());
+            CollectionAppWidgetProvider.sendRefreshBroadcast(context);
         }
 
     }
 
     @Override
     public MasterListAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        Context context = viewGroup.getContext();
+        context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.items_recipe_card;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
@@ -74,4 +78,13 @@ public class MasterListAdapter extends RecyclerView.Adapter<MasterListAdapter.Ma
         recipe = recipee;
         notifyDataSetChanged();
     }
+
+    public static String getRecipePositionName(){
+        return  recipePositionName;
+    }
+    public void setRecipePositionName(String rec){
+        recipePositionName = rec;
+
+    }
+
 }

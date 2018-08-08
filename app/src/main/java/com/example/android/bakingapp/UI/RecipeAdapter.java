@@ -75,4 +75,5 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
         recipe = recipeDescription;
     }
 
+
 }
