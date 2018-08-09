@@ -50,10 +50,23 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                    intent.putParcelableArrayListExtra("ing", b.<Ingredient>getParcelableArrayList("ingredients"));
-                    startActivity(intent);
-                    ingredientBool = true;
+
+                    if(ListActivity.mTwoPane){
+                        Bundle x = new Bundle();
+                        x.putParcelableArrayList("ing", b.<Ingredient>getParcelableArrayList("ingredients"));
+                        ListActivity.fragment2 = new RecipeIngredients();
+                        ListActivity.fragment2.setArguments(x);
+                        ListActivity.fragmentManager2.beginTransaction()
+                                .replace(R.id.details_fragment, ListActivity.fragment2)
+                                .commit();
+
+                    }else {
+
+                        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                        intent.putParcelableArrayListExtra("ing", b.<Ingredient>getParcelableArrayList("ingredients"));
+                        startActivity(intent);
+                        ingredientBool = true;
+                    }
                 }
             });
         }else{
@@ -65,11 +78,25 @@ public class RecipeStuffFragment extends Fragment implements RecipeAdapter.Recip
 
     @Override
     public void onClick(String v, String d) {
-        Intent intent = new Intent(getActivity(), DetailsActivity.class);
-        intent.putExtra("video", v);
-        intent.putExtra("description", d);
-        startActivity(intent);
-        ingredientBool = false;
+        if(ListActivity.mTwoPane){
+
+            Bundle x = new Bundle();
+            x.putString("video", v);
+            x.putString("description", d);
+            ListActivity.fragment2 = new RecipeVideo();
+            ListActivity.fragment2.setArguments(x);
+            ListActivity.fragmentManager2.beginTransaction()
+                    .replace(R.id.details_fragment, ListActivity.fragment2)
+                    .commit();
+
+        }else {
+
+            Intent intent = new Intent(getActivity(), DetailsActivity.class);
+            intent.putExtra("video", v);
+            intent.putExtra("description", d);
+            startActivity(intent);
+            ingredientBool = false;
+        }
     }
 
 

@@ -113,7 +113,7 @@ public class RecipeVideo extends Fragment {
             card = (CardView) rootView.findViewById(R.id.cv_recipe_stuff);
             Bundle b = getArguments();
             videoURL = b.getString("video");
-            desc = b.getString("des");
+            desc = b.getString("description");
             mTextView = (TextView) rootView.findViewById(R.id.desciption);
             mTextView.setText(desc);
         }

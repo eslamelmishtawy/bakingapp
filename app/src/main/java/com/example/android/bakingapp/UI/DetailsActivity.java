@@ -35,7 +35,7 @@ public class DetailsActivity extends AppCompatActivity {
             String videoURL = intent.getStringExtra("video");
             String desc = intent.getStringExtra("description");
             b.putString("video", videoURL);
-            b.putString("des", desc);
+            b.putString("description", desc);
             fragment2 = new RecipeVideo();
             fragment2.setArguments(b);
             fragmentManager2 = getSupportFragmentManager();
