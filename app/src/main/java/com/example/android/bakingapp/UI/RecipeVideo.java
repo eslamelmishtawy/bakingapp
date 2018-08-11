@@ -107,16 +107,14 @@ public class RecipeVideo extends Fragment {
                              Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.recipe_video_layout, container, false);
-        if(savedInstanceState == null) {
-            componentListener = new ComponentListener();
-            mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
-            card = (CardView) rootView.findViewById(R.id.cv_recipe_stuff);
+        mPlayerView = (PlayerView) rootView.findViewById(R.id.playerView);
+        componentListener = new ComponentListener();
+        card = (CardView) rootView.findViewById(R.id.cv_recipe_stuff);
             Bundle b = getArguments();
             videoURL = b.getString("video");
             desc = b.getString("description");
             mTextView = (TextView) rootView.findViewById(R.id.desciption);
             mTextView.setText(desc);
-        }
         return rootView;
     }
 

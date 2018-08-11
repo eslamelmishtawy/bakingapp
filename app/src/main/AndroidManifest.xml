@@ -19,7 +19,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".UI.DetailsActivity"></activity>
+        <activity android:name=".UI.DetailsActivity"
+
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
+
+        </activity>
         <activity android:name=".UI.ListActivity"></activity>
 
 
