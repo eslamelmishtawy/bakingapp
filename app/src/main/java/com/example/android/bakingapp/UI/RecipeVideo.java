@@ -23,6 +23,7 @@ import android.widget.Button;
 
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.Utility.Ingredient;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -84,6 +85,8 @@ public class RecipeVideo extends Fragment {
             new DefaultBandwidthMeter();
     private String videoURL;
     private String desc;
+
+    private long position;
 
     private TextView mTextView;
 
@@ -178,6 +181,7 @@ public class RecipeVideo extends Fragment {
         if ((Util.SDK_INT <= 23 || player == null)) {
             if(getScreenOrientation(getContext()) == "SCREEN_ORIENTATION_PORTRAIT") {
                 initializePlayer();
+                if (position != C.TIME_UNSET) player.seekTo(position);
                 card.setVisibility(View.VISIBLE);
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mPlayerView.getLayoutParams();
                 params.width=params.MATCH_PARENT;
@@ -198,6 +202,7 @@ public class RecipeVideo extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        position = player.getCurrentPosition(); //then, save it on the bundle.
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
